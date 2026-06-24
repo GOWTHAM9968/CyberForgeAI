@@ -11,17 +11,36 @@
 
 <h1>CyberForge AI</h1>
 
-<form action="/dashboard">
+<!DOCTYPE html>
+<html>
 
-<input type="text" placeholder="Username" required>
+<body>
 
-<input type="password" placeholder="Password" required>
+<h1>CyberForge AI Login</h1>
 
-<button type="submit">
+<form action="/login" method="POST">
+
+<input
+name="username"
+placeholder="Username">
+
+<input
+type="password"
+name="password"
+placeholder="Password">
+
+<button>
 Login
 </button>
 
 </form>
+
+<a href="/register">
+Create Account
+</a>
+
+</body>
+</html>
 
 </div>
 
