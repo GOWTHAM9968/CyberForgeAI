@@ -12,9 +12,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# -----------------------------
-# Database Model
-# -----------------------------
+# ==========================
+# DATABASE
+# ==========================
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,9 +33,9 @@ class User(db.Model):
 with app.app_context():
     db.create_all()
 
-# -----------------------------
-# Password Checker
-# -----------------------------
+# ==========================
+# PASSWORD CHECKER
+# ==========================
 
 def check_password_strength(password):
 
@@ -61,25 +61,69 @@ def check_password_strength(password):
 
     return "Strong"
 
-# -----------------------------
-# Home/Login Page
-# -----------------------------
+# ==========================
+# URL SCANNER
+# ==========================
+
+def scan_url(url):
+
+    suspicious_words = [
+        "login",
+        "verify",
+        "secure",
+        "bank",
+        "update",
+        "free",
+        "gift"
+    ]
+
+    score = 0
+
+    for word in suspicious_words:
+
+        if word in url.lower():
+            score += 1
+
+    if score >= 3:
+        return "High Risk"
+
+    elif score >= 1:
+        return "Medium Risk"
+
+    return "Low Risk"
+
+# ==========================
+# PHISHING DETECTOR
+# ==========================
+
+def detect_phishing(url):
+
+    suspicious = [
+        "@",
+        "bit.ly",
+        "tinyurl",
+        "free-money",
+        "gift-card"
+    ]
+
+    for item in suspicious:
+
+        if item in url.lower():
+            return "Possible Phishing"
+
+    return "Looks Safe"
+
+# ==========================
+# ROUTES
+# ==========================
 
 @app.route("/")
 def home():
     return render_template("login.html")
 
-# -----------------------------
-# Register Page
-# -----------------------------
-
 @app.route("/register")
 def register():
     return render_template("register.html")
-
-# -----------------------------
-# Register User
-# -----------------------------
 
 @app.route("/register_user", methods=["POST"])
 def register_user():
@@ -106,10 +150,6 @@ def register_user():
 
     return redirect("/")
 
-# -----------------------------
-# Login
-# -----------------------------
-
 @app.route("/login", methods=["POST"])
 def login():
 
@@ -131,10 +171,6 @@ def login():
 
     return "Invalid Username or Password"
 
-# -----------------------------
-# Dashboard
-# -----------------------------
-
 @app.route("/dashboard")
 def dashboard():
 
@@ -146,15 +182,8 @@ def dashboard():
         username=session["user"]
     )
 
-# -----------------------------
-# Password Strength Checker
-# -----------------------------
-
 @app.route("/password", methods=["POST"])
 def password_checker():
-
-    if "user" not in session:
-        return redirect("/")
 
     password = request.form["password"]
 
@@ -166,15 +195,8 @@ def password_checker():
         result=result
     )
 
-# -----------------------------
-# Hash Generator
-# -----------------------------
-
 @app.route("/hash", methods=["POST"])
 def hash_generator():
-
-    if "user" not in session:
-        return redirect("/")
 
     text = request.form["text"]
 
@@ -193,9 +215,21 @@ def hash_generator():
         sha256=sha256
     )
 
-# -----------------------------
-# Logout
-# -----------------------------
+@app.route("/urlscan", methods=["POST"])
+def urlscan():
+
+    url = request.form["url"]
+
+    risk = scan_url(url)
+
+    phishing = detect_phishing(url)
+
+    return render_template(
+        "dashboard.html",
+        username=session["user"],
+        risk=risk,
+        phishing=phishing
+    )
 
 @app.route("/logout")
 def logout():
@@ -203,10 +237,6 @@ def logout():
     session.pop("user", None)
 
     return redirect("/")
-
-# -----------------------------
-# Run Application
-# -----------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)

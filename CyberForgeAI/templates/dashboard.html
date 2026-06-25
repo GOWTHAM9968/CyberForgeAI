@@ -1,31 +1,48 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+
+<title>CyberForge AI Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
 <body>
 
-<h1>
-Welcome {{username}}
-</h1>
+<h1>CyberForge AI Dashboard</h1>
 
-<h2>Password Strength Checker</h2>
+<h2>Welcome {{username}}</h2>
+
+<a href="/logout">Logout</a>
+
+<hr>
+
+<div class="card">
+<h3>Password Strength Checker</h3>
 
 <form action="/password" method="POST">
 
 <input
+type="password"
 name="password"
 placeholder="Enter Password">
 
-<button>
+<button type="submit">
 Check
 </button>
 
 </form>
 
 <p>{{result}}</p>
+</div>
 
 <hr>
 
-<h2>Hash Generator</h2>
+<div class="card">
+<h3>Hash Generator</h3>
 
 <form action="/hash" method="POST">
 
@@ -33,15 +50,63 @@ Check
 name="text"
 placeholder="Enter Text">
 
-<button>
+<button type="submit">
 Generate
 </button>
 
 </form>
 
-<p>MD5: {{md5}}</p>
+<p><b>MD5:</b> {{md5}}</p>
 
-<p>SHA256: {{sha256}}</p>
+<p><b>SHA256:</b> {{sha256}}</p>
+</div>
+
+<hr>
+
+<div class="card">
+
+<h3>URL Scanner</h3>
+
+<form action="/urlscan" method="POST">
+
+<input
+name="url"
+placeholder="https://example.com">
+
+<button type="submit">
+Scan URL
+</button>
+
+</form>
+
+<p><b>Risk Level:</b> {{risk}}</p>
+
+<p><b>Phishing Check:</b> {{phishing}}</p>
+
+</div>
+
+<hr>
+
+<div class="card">
+
+<h3>CyberForge AI Community Edition</h3>
+
+<ul>
+
+<li>Password Security Checker</li>
+
+<li>MD5 Generator</li>
+
+<li>SHA256 Generator</li>
+
+<li>URL Scanner</li>
+
+<li>Phishing Detector</li>
+
+</ul>
+
+</div>
 
 </body>
+
 </html>
