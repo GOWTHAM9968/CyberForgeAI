@@ -26,3 +26,19 @@ button{
     padding:20px;
     margin:30px;
 }
+.card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:10px;
+    margin:20px;
+}
+
+input{
+    padding:10px;
+    width:250px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}

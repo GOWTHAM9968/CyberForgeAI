@@ -7,13 +7,41 @@
 Welcome {{username}}
 </h1>
 
-<h2>
-CyberForge AI Dashboard
-</h2>
+<h2>Password Strength Checker</h2>
 
-<a href="/logout">
-Logout
-</a>
+<form action="/password" method="POST">
+
+<input
+name="password"
+placeholder="Enter Password">
+
+<button>
+Check
+</button>
+
+</form>
+
+<p>{{result}}</p>
+
+<hr>
+
+<h2>Hash Generator</h2>
+
+<form action="/hash" method="POST">
+
+<input
+name="text"
+placeholder="Enter Text">
+
+<button>
+Generate
+</button>
+
+</form>
+
+<p>MD5: {{md5}}</p>
+
+<p>SHA256: {{sha256}}</p>
 
 </body>
 </html>
