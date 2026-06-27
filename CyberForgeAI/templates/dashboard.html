@@ -3,7 +3,7 @@
 
 <head>
 
-<title>CyberForge AI Dashboard</title>
+<title>CyberForge AI</title>
 
 <link rel="stylesheet"
 href="{{ url_for('static', filename='css/style.css') }}">
@@ -12,16 +12,61 @@ href="{{ url_for('static', filename='css/style.css') }}">
 
 <body>
 
-<h1>CyberForge AI Dashboard</h1>
+<header>
 
-<h2>Welcome {{username}}</h2>
+<h1>🛡 CyberForge AI</h1>
+
+<div>
+
+Welcome {{username}}
 
 <a href="/logout">Logout</a>
 
-<hr>
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="cards">
 
 <div class="card">
-<h3>Password Strength Checker</h3>
+
+<h3>🔐 Password Checker</h3>
+
+<p>Check password strength</p>
+
+</div>
+
+<div class="card">
+
+<h3>🧬 Hash Generator</h3>
+
+<p>Generate MD5 & SHA256</p>
+
+</div>
+
+<div class="card">
+
+<h3>🌐 URL Scanner</h3>
+
+<p>Detect suspicious URLs</p>
+
+</div>
+
+<div class="card">
+
+<h3>📄 Reports</h3>
+
+<p>View security activity</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<h2>Password Strength Checker</h2>
 
 <form action="/password" method="POST">
 
@@ -30,19 +75,19 @@ type="password"
 name="password"
 placeholder="Enter Password">
 
-<button type="submit">
+<button>
+
 Check
+
 </button>
 
 </form>
 
-<p>{{result}}</p>
-</div>
+<h3>{{result}}</h3>
 
 <hr>
 
-<div class="card">
-<h3>Hash Generator</h3>
+<h2>Hash Generator</h2>
 
 <form action="/hash" method="POST">
 
@@ -50,22 +95,33 @@ Check
 name="text"
 placeholder="Enter Text">
 
-<button type="submit">
+<button>
+
 Generate
+
 </button>
 
 </form>
 
-<p><b>MD5:</b> {{md5}}</p>
+<p>
 
-<p><b>SHA256:</b> {{sha256}}</p>
-</div>
+<b>MD5:</b>
+
+{{md5}}
+
+</p>
+
+<p>
+
+<b>SHA256:</b>
+
+{{sha256}}
+
+</p>
 
 <hr>
 
-<div class="card">
-
-<h3>URL Scanner</h3>
+<h2>URL Scanner</h2>
 
 <form action="/urlscan" method="POST">
 
@@ -73,37 +129,37 @@ Generate
 name="url"
 placeholder="https://example.com">
 
-<button type="submit">
-Scan URL
+<button>
+
+Scan
+
 </button>
 
 </form>
 
-<p><b>Risk Level:</b> {{risk}}</p>
+<p>
 
-<p><b>Phishing Check:</b> {{phishing}}</p>
+<b>Risk:</b>
 
-</div>
+{{risk}}
+
+</p>
+
+<p>
+
+<b>Phishing:</b>
+
+{{phishing}}
+
+</p>
 
 <hr>
 
-<div class="card">
+<a href="/reports">
 
-<h3>CyberForge AI Community Edition</h3>
+View Security Reports
 
-<ul>
-
-<li>Password Security Checker</li>
-
-<li>MD5 Generator</li>
-
-<li>SHA256 Generator</li>
-
-<li>URL Scanner</li>
-
-<li>Phishing Detector</li>
-
-</ul>
+</a>
 
 </div>
 
