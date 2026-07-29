@@ -17,6 +17,7 @@ db = SQLAlchemy(app)
 # ==========================
 
 class User(db.Model):
+    
     id = db.Column(db.Integer, primary_key=True)
 
     username = db.Column(
@@ -30,6 +31,11 @@ class User(db.Model):
         nullable=False
     )
 
+    role = db.Column(
+        db.String(30),
+        nullable=False,
+        default="community"
+    )
 with app.app_context():
     db.create_all()
 
