@@ -1,0 +1,34 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Flask
+instance/
+database.db
+*.db
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Reports
+reports/generated_reports/
+
+# Android projects (if accidentally copied)
+app-debug.apk (2)/
+*.apk
+
+# Build files
+build/
+dist/

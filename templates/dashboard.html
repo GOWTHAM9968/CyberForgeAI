@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>CyberForge AI</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🛡 CyberForge AI</h1>
+
+<div>
+
+Welcome {{username}}
+
+<a href="/logout">Logout</a>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card">
+
+<h3>🔐 Password Checker</h3>
+
+<p>Check password strength</p>
+
+</div>
+
+<div class="card">
+
+<h3>🧬 Hash Generator</h3>
+
+<p>Generate MD5 & SHA256</p>
+
+</div>
+
+<div class="card">
+
+<h3>🌐 URL Scanner</h3>
+
+<p>Detect suspicious URLs</p>
+
+</div>
+
+<div class="card">
+
+<h3>📄 Reports</h3>
+
+<p>View security activity</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<h2>Password Strength Checker</h2>
+
+<form action="/password" method="POST">
+
+<input
+type="password"
+name="password"
+placeholder="Enter Password">
+
+<button>
+
+Check
+
+</button>
+
+</form>
+
+<h3>{{result}}</h3>
+
+<hr>
+
+<h2>Hash Generator</h2>
+
+<form action="/hash" method="POST">
+
+<input
+name="text"
+placeholder="Enter Text">
+
+<button>
+
+Generate
+
+</button>
+
+</form>
+
+<p>
+
+<b>MD5:</b>
+
+{{md5}}
+
+</p>
+
+<p>
+
+<b>SHA256:</b>
+
+{{sha256}}
+
+</p>
+
+<hr>
+
+<h2>URL Scanner</h2>
+
+<form action="/urlscan" method="POST">
+
+<input
+name="url"
+placeholder="https://example.com">
+
+<button>
+
+Scan
+
+</button>
+
+</form>
+
+<p>
+
+<b>Risk:</b>
+
+{{risk}}
+
+</p>
+
+<p>
+
+<b>Phishing:</b>
+
+{{phishing}}
+
+</p>
+
+<hr>
+
+<a href="/reports">
+
+View Security Reports
+
+</a>
+
+</div>
+
+</body>
+
+</html>
