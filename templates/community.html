@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Community Edition</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        🛡️ CyberForge AI
+    </div>
+
+    <div class="user-menu">
+
+        {{ username }}
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="main-content standalone">
+
+    <div class="page-title">
+
+        <div>
+
+            <h1>
+                👥 Community Edition
+            </h1>
+
+            <p>
+                Cybersecurity learning and awareness tools
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="tool-grid">
+
+        <div class="feature-card">
+
+            <h2>🔐 Password Security</h2>
+
+            <p>
+                Learn password security fundamentals
+                and evaluate password strength.
+            </p>
+
+            <a href="{{ url_for('dashboard') }}">
+                Open Tool →
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h2>🌐 URL Safety</h2>
+
+            <p>
+                Perform basic checks on suspicious
+                URLs before interacting with them.
+            </p>
+
+            <a href="{{ url_for('dashboard') }}">
+                Open Scanner →
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h2>🧠 Security Awareness</h2>
+
+            <p>
+                Learn about phishing, passwords,
+                privacy and common cyber threats.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <a href="{{ url_for('dashboard') }}"
+       class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+</body>
+</html>

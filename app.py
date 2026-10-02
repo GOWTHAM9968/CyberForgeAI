@@ -18,6 +18,9 @@ from functools import wraps
 from datetime import datetime
 import hashlib
 from urllib.parse import urlparse
+import os
+import requests
+from dotenv import load_dotenv
 
 
 # ============================================================
@@ -1066,6 +1069,259 @@ def internal_server_error(error):
     <h1>500 - Internal Server Error</h1>
     <a href="/">Go to Login</a>
     """, 500
+
+
+# ============================================================
+# THREAT INTELLIGENCE
+# ============================================================
+
+def check_ip_reputation(ip_address):
+
+    if not ABUSEIPDB_API_KEY:
+        return {
+            "success": False,
+            "message": "AbuseIPDB API key is not configured."
+        }
+
+    url = "https://api.abuseipdb.com/api/v2/check"
+
+    headers = {
+        "Key": ABUSEIPDB_API_KEY,
+        "Accept": "application/json"
+    }
+
+    params = {
+        "ipAddress": ip_address,
+        "maxAgeInDays": 90
+    }
+
+    try:
+
+        response = requests.get(
+            url,
+            headers=headers,
+            params=params,
+            timeout=10
+        )
+
+        if response.status_code != 200:
+
+            return {
+                "success": False,
+                "message": "Threat intelligence service returned an error."
+            }
+
+        data = response.json().get("data", {})
+
+        return {
+            "success": True,
+            "ip": data.get("ipAddress"),
+            "abuse_confidence": data.get(
+                "abuseConfidenceScore"
+            ),
+            "country": data.get("countryCode"),
+            "isp": data.get("isp"),
+            "domain": data.get("domain"),
+            "total_reports": data.get(
+                "totalReports"
+            ),
+            "last_reported": data.get(
+                "lastReportedAt"
+            )
+        }
+
+    except requests.RequestException:
+
+        return {
+            "success": False,
+            "message": "Unable to connect to threat intelligence service."
+        }
+        
+        
+def check_hash_reputation(file_hash):
+    
+    if not VIRUSTOTAL_API_KEY:
+        return {
+            "success": False,
+            "message": "VirusTotal API key is not configured."
+        }
+
+    url = f"https://www.virustotal.com/api/v3/files/{file_hash}"
+
+    headers = {
+        "x-apikey": VIRUSTOTAL_API_KEY
+    }
+
+    try:
+
+        response = requests.get(
+            url,
+            headers=headers,
+            timeout=10
+        )
+
+        if response.status_code == 404:
+
+            return {
+                "success": True,
+                "found": False,
+                "message": "Hash was not found in the VirusTotal database."
+            }
+
+        if response.status_code != 200:
+
+            return {
+                "success": False,
+                "message": "VirusTotal returned an error."
+            }
+
+        data = response.json()
+
+        attributes = data["data"]["attributes"]
+
+        stats = attributes.get(
+            "last_analysis_stats",
+            {}
+        )
+
+        return {
+            "success": True,
+            "found": True,
+            "hash": file_hash,
+            "malicious": stats.get(
+                "malicious",
+                0
+            ),
+            "suspicious": stats.get(
+                "suspicious",
+                0
+            ),
+            "undetected": stats.get(
+                "undetected",
+                0
+            ),
+            "harmless": stats.get(
+                "harmless",
+                0
+            ),
+            "type": attributes.get(
+                "type_description"
+            ),
+            "size": attributes.get(
+                "size"
+            )
+        }
+
+    except requests.RequestException:
+
+        return {
+            "success": False,
+            "message": "Unable to connect to VirusTotal."
+        }
+# ============================================================
+# THREAT INTELLIGENCE PAGE
+# ============================================================
+
+@app.route("/threat-intelligence")
+@login_required
+def threat_intelligence():
+
+    return render_template(
+        "threat_intelligence.html",
+        username=session["user"],
+        role=session.get("role")
+    )
+
+
+
+# ============================================================
+# IP THREAT INTELLIGENCE
+# ============================================================
+
+@app.route(
+    "/threat-intelligence/ip",
+    methods=["POST"]
+)
+@login_required
+def threat_ip():
+
+    ip_address = request.form.get(
+        "ip",
+        ""
+    ).strip()
+
+    if not ip_address:
+
+        flash(
+            "Please enter an IP address.",
+            "danger"
+        )
+
+        return redirect(
+            url_for("threat_intelligence")
+        )
+
+    result = check_ip_reputation(
+        ip_address
+    )
+
+    save_log(
+        session["user"],
+        "IP Threat Intelligence",
+        ip_address
+    )
+
+    return render_template(
+        "threat_intelligence.html",
+        username=session["user"],
+        role=session.get("role"),
+        ip_result=result
+    )
+    
+# ============================================================
+# HASH THREAT INTELLIGENCE
+# ============================================================
+
+@app.route(
+    "/threat-intelligence/hash",
+    methods=["POST"]
+)
+@login_required
+def threat_hash():
+
+    file_hash = request.form.get(
+        "hash",
+        ""
+    ).strip().lower()
+
+    if not file_hash:
+
+        flash(
+            "Please enter a hash.",
+            "danger"
+        )
+
+        return redirect(
+            url_for("threat_intelligence")
+        )
+
+    result = check_hash_reputation(
+        file_hash
+    )
+
+    save_log(
+        session["user"],
+        "Hash Threat Intelligence",
+        file_hash[:20]
+    )
+
+    return render_template(
+        "threat_intelligence.html",
+        username=session["user"],
+        role=session.get("role"),
+        hash_result=result
+    )
+
 
 
 # ============================================================

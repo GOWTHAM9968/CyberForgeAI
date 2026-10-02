@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Business Edition</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        🛡️ CyberForge AI
+    </div>
+
+    <div class="user-menu">
+
+        {{ username }}
+
+        <span class="role-badge">
+            BUSINESS
+        </span>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="main-content standalone">
+
+    <div class="page-title">
+
+        <div>
+
+            <h1>
+                🏢 Business Security
+            </h1>
+
+            <p>
+                Security monitoring and organizational tools
+            </p>
+
+        </div>
+
+        <span class="status-online">
+            ● PROTECTED
+        </span>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <span>🌐</span>
+
+            <div>
+
+                <h3>URL</h3>
+
+                <p>Security Scanning</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>📊</span>
+
+            <div>
+
+                <h3>Reports</h3>
+
+                <p>Activity Monitoring</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>🛡️</span>
+
+            <div>
+
+                <h3>Threat</h3>
+
+                <p>Detection Ready</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <h2>Business Security Center</h2>
+
+        <p>
+            Future modules can include threat intelligence,
+            security monitoring, asset management,
+            alerting and organization-level reporting.
+        </p>
+
+        <a href="{{ url_for('dashboard') }}">
+            Open Security Tools →
+        </a>
+
+    </div>
+
+
+    <a href="{{ url_for('dashboard') }}"
+       class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+</body>
+</html>

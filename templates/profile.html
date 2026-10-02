@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>CyberForge AI | Profile</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        🛡️ CyberForge AI
+    </div>
+
+    <div class="user-menu">
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="main-content standalone">
+
+    <div class="profile-card">
+
+        <div class="profile-icon">
+            👤
+        </div>
+
+        <h1>
+            {{ user.username }}
+        </h1>
+
+        <span class="role-badge">
+            {{ user.role|upper }}
+        </span>
+
+        <div class="profile-info">
+
+            <div>
+
+                <strong>User ID</strong>
+
+                <span>
+                    {{ user.id }}
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>Account Created</strong>
+
+                <span>
+                    {{ user.created_at }}
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>Total Activity</strong>
+
+                <span>
+                    {{ activity_count }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <a href="{{ url_for('dashboard') }}"
+       class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+</body>
+</html>

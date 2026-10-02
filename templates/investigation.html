@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Investigation Edition</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        🛡️ CyberForge AI
+    </div>
+
+    <div class="user-menu">
+
+        {{ username }}
+
+        <span class="role-badge">
+            INVESTIGATION
+        </span>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="main-content standalone">
+
+    <div class="page-title">
+
+        <div>
+
+            <h1>
+                🔎 Investigation Edition
+            </h1>
+
+            <p>
+                Authorized digital investigation workspace
+            </p>
+
+        </div>
+
+        <span class="status-online">
+            ● SECURE
+        </span>
+
+    </div>
+
+
+    <div class="tool-grid">
+
+
+        <div class="feature-card">
+
+            <h2>🧬 Hash Analysis</h2>
+
+            <p>
+                Generate and compare hashes for
+                authorized investigation workflows.
+            </p>
+
+            <a href="{{ url_for('dashboard') }}">
+                Open Hash Tool →
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h2>🌐 URL Analysis</h2>
+
+            <p>
+                Perform basic URL indicators analysis
+                on authorized investigation data.
+            </p>
+
+            <a href="{{ url_for('dashboard') }}">
+                Open URL Scanner →
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <h2>📄 Investigation Reports</h2>
+
+            <p>
+                Review recorded activity and
+                security analysis results.
+            </p>
+
+            <a href="{{ url_for('reports') }}">
+                Open Reports →
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="warning-box">
+
+        ⚠️ Investigation features should only be
+        used with proper authorization and
+        applicable legal procedures.
+
+    </div>
+
+
+    <a href="{{ url_for('dashboard') }}"
+       class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CyberForge AI | Threat Intelligence</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        🛡️ CyberForge AI
+    </div>
+
+    <div class="user-menu">
+
+        👤 {{ username }}
+
+        <span class="role-badge">
+            {{ role|upper }}
+        </span>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="main-content standalone">
+
+    <div class="page-title">
+
+        <div>
+
+            <h1>
+                🧠 Threat Intelligence
+            </h1>
+
+            <p>
+                Analyze indicators using external
+                threat intelligence services.
+            </p>
+
+        </div>
+
+        <span class="status-online">
+            ● INTELLIGENCE
+        </span>
+
+    </div>
+
+
+    {% with messages = get_flashed_messages(
+        with_categories=true
+    ) %}
+
+        {% for category, message in messages %}
+
+            <div class="alert {{ category }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endwith %}
+
+
+    <!-- IP -->
+
+    <div class="tool-grid">
+
+        <div class="tool-card">
+
+            <div class="tool-icon">
+                🌐
+            </div>
+
+            <h3>
+                IP Reputation
+            </h3>
+
+            <p>
+                Check an IP address against
+                available abuse reports.
+            </p>
+
+            <form
+                action="{{ url_for('threat_ip') }}"
+                method="POST"
+            >
+
+                <input
+                    type="text"
+                    name="ip"
+                    placeholder="8.8.8.8"
+                    required
+                >
+
+                <button>
+                    🔍 Check IP
+                </button>
+
+            </form>
+
+
+            {% if ip_result %}
+
+                <div class="scan-result">
+
+                    {% if ip_result.success %}
+
+                        <h3>
+                            IP Intelligence Result
+                        </h3>
+
+                        <p>
+                            <strong>IP:</strong>
+                            {{ ip_result.ip }}
+                        </p>
+
+                        <p>
+                            <strong>Abuse Confidence:</strong>
+                            {{ ip_result.abuse_confidence }}%
+                        </p>
+
+                        <p>
+                            <strong>Country:</strong>
+                            {{ ip_result.country or "-" }}
+                        </p>
+
+                        <p>
+                            <strong>ISP:</strong>
+                            {{ ip_result.isp or "-" }}
+                        </p>
+
+                        <p>
+                            <strong>Domain:</strong>
+                            {{ ip_result.domain or "-" }}
+                        </p>
+
+                        <p>
+                            <strong>Total Reports:</strong>
+                            {{ ip_result.total_reports }}
+                        </p>
+
+                        <p>
+                            <strong>Last Reported:</strong>
+                            {{ ip_result.last_reported or "-" }}
+                        </p>
+
+                    {% else %}
+
+                        <p>
+                            {{ ip_result.message }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- HASH -->
+
+        <div class="tool-card">
+
+            <div class="tool-icon">
+                🧬
+            </div>
+
+            <h3>
+                Malware Hash Reputation
+            </h3>
+
+            <p>
+                Check a SHA-256, SHA-1 or MD5
+                hash against VirusTotal.
+            </p>
+
+            <form
+                action="{{ url_for('threat_hash') }}"
+                method="POST"
+            >
+
+                <input
+                    type="text"
+                    name="hash"
+                    placeholder="Enter file hash"
+                    required
+                >
+
+                <button>
+                    🔍 Check Hash
+                </button>
+
+            </form>
+
+
+            {% if hash_result %}
+
+                <div class="scan-result">
+
+                    {% if hash_result.success %}
+
+                        {% if hash_result.found %}
+
+                            <h3>
+                                Hash Intelligence Result
+                            </h3>
+
+                            <p>
+                                <strong>Hash:</strong>
+                                {{ hash_result.hash }}
+                            </p>
+
+                            <p>
+                                <strong>Malicious:</strong>
+                                {{ hash_result.malicious }}
+                            </p>
+
+                            <p>
+                                <strong>Suspicious:</strong>
+                                {{ hash_result.suspicious }}
+                            </p>
+
+                            <p>
+                                <strong>Undetected:</strong>
+                                {{ hash_result.undetected }}
+                            </p>
+
+                            <p>
+                                <strong>Harmless:</strong>
+                                {{ hash_result.harmless }}
+                            </p>
+
+                            <p>
+                                <strong>File Type:</strong>
+                                {{ hash_result.type or "-" }}
+                            </p>
+
+                            <p>
+                                <strong>Size:</strong>
+                                {{ hash_result.size or "-" }}
+                            </p>
+
+                        {% else %}
+
+                            <p>
+                                {{ hash_result.message }}
+                            </p>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        <p>
+                            {{ hash_result.message }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="warning-box">
+
+        ⚠️ Threat intelligence results are
+        reputation indicators and should be
+        validated before making security decisions.
+
+    </div>
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="back-link"
+    >
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+</body>
+
+</html>

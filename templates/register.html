@@ -1,30 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
 
-<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h1>Register</h1>
+    <title>CyberForge AI | Register</title>
 
-<form action="/register_user" method="POST">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 
-<input
-name="username"
-placeholder="Username"
-required>
+</head>
 
-<input
-type="password"
-name="password"
-placeholder="Password"
-required>
+<body class="auth-page">
 
-<button>
-Register
-</button>
+<div class="auth-container">
 
-</form>
+    <div class="auth-brand">
+        <div class="logo">🛡️</div>
 
-<a href="/">Login</a>
+        <h1>CyberForge AI</h1>
+
+        <p>Create your cybersecurity account</p>
+    </div>
+
+    <div class="auth-card">
+
+        <h2>Create Account</h2>
+
+        <p class="muted">
+            Choose your platform edition
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+        <form action="{{ url_for('register_user') }}"
+              method="POST">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Choose username"
+                minlength="3"
+                required
+            >
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Create password"
+                minlength="8"
+                required
+            >
+
+            <label>Confirm Password</label>
+
+            <input
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm password"
+                minlength="8"
+                required
+            >
+
+            <label>Platform Edition</label>
+
+            <select name="role" required>
+
+                <option value="community">
+                    Community Edition
+                </option>
+
+                <option value="business">
+                    Business Edition
+                </option>
+
+                <option value="investigation">
+                    Investigation Edition
+                </option>
+
+            </select>
+
+            <button type="submit" class="primary-btn">
+                🚀 Create Account
+            </button>
+
+        </form>
+
+        <p class="auth-footer">
+
+            Already have an account?
+
+            <a href="{{ url_for('home') }}">
+                Login
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
 
 </body>
 </html>

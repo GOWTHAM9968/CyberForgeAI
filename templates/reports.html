@@ -1,35 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>Security Reports</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
 <body>
 
-<h1>Security Activity Logs</h1>
+<header class="topbar">
 
-<table border="1">
+    <div class="brand">
+        🛡️ CyberForge AI
+    </div>
 
-<tr>
-<th>User</th>
-<th>Action</th>
-</tr>
+    <div class="user-menu">
 
-{% for log in logs %}
+        {{ username }}
 
-<tr>
-<td>{{log.username}}</td>
-<td>{{log.action}}</td>
-</tr>
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
 
-{% endfor %}
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
 
-</table>
+    </div>
 
-<a href="/dashboard">
-Back Dashboard
-</a>
+</header>
+
+
+<main class="main-content standalone">
+
+    <div class="page-title">
+
+        <div>
+
+            <h1>
+                📊 Security Activity Reports
+            </h1>
+
+            <p>
+                Your recorded cybersecurity activity
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>#</th>
+                <th>Action</th>
+                <th>Result</th>
+                <th>Date & Time</th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for log in logs %}
+
+            <tr>
+
+                <td>
+                    {{ loop.index }}
+                </td>
+
+                <td>
+                    {{ log.action }}
+                </td>
+
+                <td>
+                    {{ log.result or "-" }}
+                </td>
+
+                <td>
+                    {{ log.created_at }}
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td colspan="4"
+                    class="empty-state">
+
+                    No activity recorded yet.
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <a href="{{ url_for('dashboard') }}"
+       class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</main>
 
 </body>
 </html>

@@ -1,168 +1,540 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<title>CyberForge AI</title>
+    <meta charset="UTF-8">
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CyberForge AI | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 
 <body>
 
-<header>
+<header class="topbar">
 
-<h1>🛡 CyberForge AI</h1>
+    <div class="brand">
+        🛡️ CyberForge AI
+    </div>
 
-<div>
+    <div class="user-menu">
 
-Welcome {{username}}
+        <span>
+            👤 {{ username }}
+        </span>
 
-<a href="/logout">Logout</a>
+        <span class="role-badge">
+            {{ role|upper }}
+        </span>
 
-</div>
+        <a href="{{ url_for('profile') }}">
+            Profile
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
 
 </header>
 
-<div class="container">
 
-<div class="cards">
+<div class="layout">
 
-<div class="card">
 
-<h3>🔐 Password Checker</h3>
+    <!-- SIDEBAR -->
 
-<p>Check password strength</p>
+    <aside class="sidebar">
 
-</div>
+        <h3>CONTROL CENTER</h3>
 
-<div class="card">
+        <a href="{{ url_for('dashboard') }}">
+            🏠 Dashboard
+        </a>
 
-<h3>🧬 Hash Generator</h3>
+        {% if role == "community" %}
 
-<p>Generate MD5 & SHA256</p>
+        <a href="{{ url_for('community') }}">
+            👥 Community
+        </a>
 
-</div>
+        {% endif %}
 
-<div class="card">
 
-<h3>🌐 URL Scanner</h3>
+        {% if role == "business" %}
 
-<p>Detect suspicious URLs</p>
+        <a href="{{ url_for('business') }}">
+            🏢 Business
+        </a>
 
-</div>
+        {% endif %}
 
-<div class="card">
 
-<h3>📄 Reports</h3>
+        {% if role == "investigation" %}
 
-<p>View security activity</p>
+        <a href="{{ url_for('investigation') }}">
+            🔎 Investigation
+        </a>
 
-</div>
+        {% endif %}
 
-</div>
 
-<hr>
+        {% if role == "admin" %}
 
-<h2>Password Strength Checker</h2>
+        <a href="{{ url_for('admin') }}">
+            ⚙️ Admin
+        </a>
 
-<form action="/password" method="POST">
+        {% endif %}
 
-<input
-type="password"
-name="password"
-placeholder="Enter Password">
 
-<button>
-
-Check
-
-</button>
-
-</form>
-
-<h3>{{result}}</h3>
-
-<hr>
-
-<h2>Hash Generator</h2>
-
-<form action="/hash" method="POST">
-
-<input
-name="text"
-placeholder="Enter Text">
-
-<button>
-
-Generate
-
-</button>
-
-</form>
-
-<p>
-
-<b>MD5:</b>
-
-{{md5}}
-
-</p>
-
-<p>
-
-<b>SHA256:</b>
-
-{{sha256}}
-
-</p>
-
-<hr>
-
-<h2>URL Scanner</h2>
-
-<form action="/urlscan" method="POST">
-
-<input
-name="url"
-placeholder="https://example.com">
-
-<button>
-
-Scan
-
-</button>
-
-</form>
-
-<p>
-
-<b>Risk:</b>
-
-{{risk}}
-
-</p>
-
-<p>
-
-<b>Phishing:</b>
-
-{{phishing}}
-
-</p>
-
-<hr>
-
-<a href="/reports">
-
-View Security Reports
-
+        <a href="{{ url_for('threat_intelligence') }}">
+    🧠 Threat Intelligence
 </a>
+
+
+        <a href="{{ url_for('reports') }}">
+            📊 Activity Reports
+        </a>
+
+        <a href="{{ url_for('profile') }}">
+            👤 Profile
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <div class="page-title">
+
+            <div>
+
+                <h1>
+                    Security Dashboard
+                </h1>
+
+                <p>
+                    Welcome back, {{ username }}
+                </p>
+
+            </div>
+
+            <span class="status-online">
+                ● SYSTEM ONLINE
+            </span>
+
+        </div>
+
+
+        <!-- STAT CARDS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <span>📊</span>
+
+                <div>
+
+                    <h3>
+                        {{ total_activity|default(0) }}
+                    </h3>
+
+                    <p>Total Activities</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>🌐</span>
+
+                <div>
+
+                    <h3>
+                        {{ total_url_scans|default(0) }}
+                    </h3>
+
+                    <p>URL Scans</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>🔐</span>
+
+                <div>
+
+                    <h3>
+                        {{ total_password_checks|default(0) }}
+                    </h3>
+
+                    <p>Password Checks</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>🧬</span>
+
+                <div>
+
+                    <h3>
+                        {{ total_hashes|default(0) }}
+                    </h3>
+
+                    <p>Hashes Generated</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SECURITY TOOLS -->
+
+        <section class="section">
+
+            <h2>Security Tools</h2>
+
+            <div class="tool-grid">
+
+
+                <!-- PASSWORD -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        🔐
+                    </div>
+
+                    <h3>Password Strength</h3>
+
+                    <p>
+                        Analyze password strength
+                        and receive security suggestions.
+                    </p>
+
+                    <form action="{{ url_for('password_checker') }}"
+                          method="POST">
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Enter password"
+                            required
+                        >
+
+                        <button>
+                            Analyze
+                        </button>
+
+                    </form>
+
+                    {% if result %}
+
+                    <div class="result-box">
+
+                        <strong>
+                            Result:
+                        </strong>
+
+                        {{ result }}
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if suggestions %}
+
+                    <ul class="suggestions">
+
+                        {% for suggestion in suggestions %}
+
+                        <li>
+                            {{ suggestion }}
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- HASH -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        🧬
+                    </div>
+
+                    <h3>Hash Generator</h3>
+
+                    <p>
+                        Generate MD5 and SHA-256
+                        hashes for testing.
+                    </p>
+
+                    <form action="{{ url_for('hash_generator') }}"
+                          method="POST">
+
+                        <input
+                            type="text"
+                            name="text"
+                            placeholder="Enter text"
+                            required
+                        >
+
+                        <button>
+                            Generate Hash
+                        </button>
+
+                    </form>
+
+
+                    {% if md5 %}
+
+                    <div class="hash-result">
+
+                        <p>
+                            <strong>MD5</strong>
+                        </p>
+
+                        <code>
+                            {{ md5 }}
+                        </code>
+
+                        <p>
+                            <strong>SHA-256</strong>
+                        </p>
+
+                        <code>
+                            {{ sha256 }}
+                        </code>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- URL SCANNER -->
+
+                <div class="tool-card wide-tool">
+
+                    <div class="tool-icon">
+                        🌐
+                    </div>
+
+                    <h3>URL Security Scanner</h3>
+
+                    <p>
+                        Perform basic heuristic checks
+                        on a URL.
+                    </p>
+
+                    <form action="{{ url_for('urlscan') }}"
+                          method="POST">
+
+                        <input
+                            type="url"
+                            name="url"
+                            placeholder="https://example.com"
+                            required
+                        >
+
+                        <button>
+                            🔍 Scan URL
+                        </button>
+
+                    </form>
+
+
+                    {% if risk %}
+
+                    <div class="scan-result">
+
+                        <h3>
+                            Scan Result
+                        </h3>
+
+                        <p>
+                            <strong>URL:</strong>
+                            {{ scanned_url }}
+                        </p>
+
+                        <p>
+                            <strong>Risk:</strong>
+                            <span class="risk">
+                                {{ risk }}
+                            </span>
+                        </p>
+
+                        <p>
+                            <strong>Phishing:</strong>
+                            {{ phishing }}
+                        </p>
+
+
+                        {% if findings %}
+
+                        <h4>
+                            Findings
+                        </h4>
+
+                        <ul>
+
+                            {% for finding in findings %}
+
+                            <li>
+                                {{ finding }}
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                        {% endif %}
+
+
+                        {% if phishing_indicators %}
+
+                        <h4>
+                            Phishing Indicators
+                        </h4>
+
+                        <ul>
+
+                            {% for indicator in phishing_indicators %}
+
+                            <li>
+                                {{ indicator }}
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                        {% endif %}
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RECENT ACTIVITY -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    Recent Activity
+                </h2>
+
+                <a href="{{ url_for('reports') }}"
+                   class="small-btn">
+                    View All
+                </a>
+
+            </div>
+
+
+            {% if recent_activity %}
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Action</th>
+                        <th>Result</th>
+                        <th>Time</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for activity in recent_activity %}
+
+                    <tr>
+
+                        <td>
+                            {{ activity.action }}
+                        </td>
+
+                        <td>
+                            {{ activity.result or "-" }}
+                        </td>
+
+                        <td>
+                            {{ activity.created_at }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+                No activity yet.
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+    </main>
 
 </div>
 
 </body>
-
 </html>
